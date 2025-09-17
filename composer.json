@@ -1,0 +1,29 @@
+{
+	"name": "oiapi/plugin",
+	"version": "1.0.0",
+	"displayName": "插件仓库",
+	"description": "一个插件仓库",
+	"author": [
+		{
+			"name": "OIAPI",
+			"email": "admin@oiapi.net",
+			"homePage": "https://www.oiapi.net",
+			"role": "开发者"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Oiapi\\": "src/Oiapi"
+		}
+	},
+	"require": {},
+	"creationDate": "2023-01-15",
+	"lastUpdate": "2023-10-28",
+	"license": "MIT",
+	"support": {
+		"documentation": "https://docs.example.com/data-processor",
+		"issues": "https://github.com/example/data-processor/issues",
+		"forum": "https://forum.example.com/c/plugins/data-processor",
+		"sourceCode": "https://github.com/example/data-processor"
+	}
+}
