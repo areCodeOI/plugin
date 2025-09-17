@@ -88,8 +88,8 @@ jobs:
         if: github.ref == 'refs/heads/test-workflow' && github.event_name == 'push'
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: test-${{ github.sha }}
-          name: 测试版本 ${{ github.sha }}
+          tag_name: test-${{ github.sha }} # 使用完整SHA作为标签确保唯一性
+          name: 测试版本 ${{ substr(github.sha, 0, 8) }} # 使用SHA前缀提高可读性
           draft: false
           prerelease: true
           body: |
