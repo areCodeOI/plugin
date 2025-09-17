@@ -1,6 +1,6 @@
 {
 	"name": "oiapi/plugin",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"displayName": "插件仓库",
 	"description": "一个插件仓库",
 	"author": [
@@ -17,8 +17,8 @@
 		}
 	},
 	"require": {},
-	"creationDate": "2023-01-15",
-	"lastUpdate": "2023-10-28",
+	"creationDate": "2025-09-17",
+	"lastUpdate": "2025-09-18",
 	"license": "MIT",
 	"support": {
 		"documentation": "https://docs.example.com/data-processor",
