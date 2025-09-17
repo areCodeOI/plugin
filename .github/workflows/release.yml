@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - test-workflow
     tags:
       - 'v*.*.*'
   pull_request:
@@ -92,24 +91,7 @@ jobs:
             ## 更新内容
             ${{ env.CHANGELOG }}
 
-      # 为test-workflow分支创建测试版本
-      - name: 为test-workflow分支创建测试版本
-        if: github.ref == 'refs/heads/test-workflow' && github.event_name == 'push'
-        uses: softprops/action-gh-release@v1
-        with:
-          # 优先使用composer版本号，如果不存在则使用SHA值
-          tag_name: test-${{ env.CURRENT_VERSION || github.sha }}
-          name: 测试版本 ${{ env.CURRENT_VERSION || github.sha }}
-          draft: false
-          prerelease: true
-          body: |
-            # test-workflow分支测试版本
-            - 基于提交：${{ github.sha }}
-            - 提交者：${{ github.event.head_commit.author.name }}
-            - 提交时间：${{ github.event.head_commit.timestamp }}
-            
-            ## 更新内容
-            ${{ env.CHANGELOG }}
+    
 
       # 为标签创建正式发布版本
       - name: 为标签创建正式发布
@@ -132,8 +114,8 @@ jobs:
   bump-version:
     needs: update-release
     runs-on: ubuntu-latest
-    # 在main分支和test-workflow分支的push事件时都运行
-    if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/test-workflow') && github.event_name == 'push'
+    # 只在main分支的push事件时运行
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
       - name: 检出代码
         uses: actions/checkout@v4
@@ -164,27 +146,14 @@ jobs:
               # 更新composer.json中的版本号
               sed -i "s/\"version\": \"$CURRENT_VERSION\"/\"version\": \"$NEW_VERSION\"/" composer.json
               
-              # 根据不同分支执行不同操作
-              if [ "${{ github.ref }}" == "refs/heads/main" ]; then
-                # main分支：标准版本更新流程
-                git add composer.json
-                git commit -m "自动更新版本号至 $NEW_VERSION"
-                # 测试环境下不推送到main分支
-                # git push origin main
-                
-                # 测试环境下不创建正式标签
-                # git tag -a v$NEW_VERSION -m "版本 $NEW_VERSION"
-                # git push origin v$NEW_VERSION
-              else
-                # test-workflow分支：测试版本更新流程
-                git add composer.json
-                git commit -m "测试：自动更新版本号至 $NEW_VERSION"
-                # 测试分支不推送更新
-                # git push origin test-workflow
-                
-                # 测试分支创建测试标签但不推送
-                # git tag -a test-v$NEW_VERSION -m "测试版本 $NEW_VERSION"
-                # git push origin test-v$NEW_VERSION
-              fi
+              # main分支：标准版本更新流程
+              git add composer.json
+              git commit -m "自动更新版本号至 $NEW_VERSION"
+              # 测试环境下不推送到main分支
+              # git push origin main
+              
+              # 测试环境下不创建正式标签
+              # git tag -a v$NEW_VERSION -m "版本 $NEW_VERSION"
+              # git push origin v$NEW_VERSION
             fi
           fi
