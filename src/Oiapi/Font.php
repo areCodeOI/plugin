@@ -1,5 +1,5 @@
 <?php
-namespace Oiapi\Font;
+namespace Oiapi;
 
 use Utils\CoroutineCurl as curl;
 use Utils\Yargs;
